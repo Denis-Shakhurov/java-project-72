@@ -29,4 +29,8 @@ public class App {
         });
         return app;
     }
+
+    public static int getNum() {
+        return 5;
+    }
 }
