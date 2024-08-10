@@ -28,11 +28,6 @@ application {
     mainClass.set("hexlet.code.App")
 }
 
-jacoco {
-    toolVersion = "0.8.11"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-}
-
 tasks.test {
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
