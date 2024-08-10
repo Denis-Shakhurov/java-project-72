@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 plugins {
     id("java")
     application
@@ -33,10 +35,15 @@ jacoco {
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+    testLogging {
+        exceptionFormat = TestExceptionFormat.FULL
+    }
 }
 
-tasks.getByName("run", JavaExec::class) {
-    standardInput = System.`in`
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+    }
 }
-
-tasks.jacocoTestReport { reports { xml.required.set(true) } }
