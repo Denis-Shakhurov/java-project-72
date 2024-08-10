@@ -15,7 +15,6 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Build with Gradle
-        uses: gradle/actions/wrapper-validation@v4
         uses: gradle/gradle-build-action@v3
         with:
           gradle-version: 8.7
@@ -29,7 +28,7 @@ jobs:
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: /app/src/main/java
+          JACOCO_SOURCE_PATH: app/src/main/java
         with:
           coverageCommand: make -C app report
           debug: true
