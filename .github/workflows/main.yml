@@ -14,12 +14,17 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - uses: gradle/gradle-build-action@v3
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v3
         with:
-          gradle-version: 8.5
-      - run: make -C app lint
-      - run: make -C app test
-      - name: Publish code coverage
+          gradle-version: 8.7
+      - run: |
+          cd app
+          make lint
+      - run: |
+          cd app
+          make test
+      - name: Code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
