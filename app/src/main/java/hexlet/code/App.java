@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 public class App {
-    //export JDBC_DATABASE_URL=jdbc:postgresql://db:5432/postgres?password=password&user=postgres
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
         return Integer.valueOf(port);
     }
 
     private static String getDataBaseUrl() {
-        String dataBaseUrl = System.getenv().getOrDefault("jdbc:h2:mem:project", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
+        String dataBaseUrl = System.getenv()
+                .getOrDefault("jdbc:h2:mem:project", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
         return dataBaseUrl;
     }
 
