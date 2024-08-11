@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildUrlPage {
+public class BuildUrlPage extends BasePage {
     private String name;
     private Map<String, List<ValidationError<Object>>> errors;
 }

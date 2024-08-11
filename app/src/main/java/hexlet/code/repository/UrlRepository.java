@@ -63,4 +63,23 @@ public class UrlRepository extends BaseRepository {
         }
         return Optional.empty();
     }
+
+    public static boolean existsByName(String name) throws SQLException {
+        var sql = "SELECT * FROM urls WHERE name = ?";
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, name);
+            var resultSet = stmt.executeQuery();
+            List<Url> urls = new ArrayList<>();
+            if (resultSet.next()) {
+                var name1 = resultSet.getString("name");
+                var createdAt = resultSet.getString("created_at");
+                var id = resultSet.getLong("id");
+                var url = new Url(name1, LocalDateTime.parse(createdAt, formatter));
+                url.setId(id);
+                urls.add(url);
+            }
+            return urls.isEmpty();
+        }
+    }
 }

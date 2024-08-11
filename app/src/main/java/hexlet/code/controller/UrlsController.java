@@ -11,7 +11,6 @@ import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,7 +22,6 @@ public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls);
-        //page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls/index.jte", model("page", page));
     }
 
@@ -38,26 +36,37 @@ public class UrlsController {
     public static void create(Context ctx) throws SQLException {
         String path = ctx.formParam("url");
         try {
-            var name1 = ctx.formParamAsClass("url", String.class).get();
-                    //.check(value -> value.equals(passwordConfirmation), "Пароли не совпадают")
-                    //.get();
-            var uri = URI.create(name1);
-            var name = uri.getAuthority();
-            //var name = urlPath.ge
-            //var nme = urlName.getAuthority();
+            var urlPath = new URL(path);
+            var uri = urlPath.toURI();
+            var name = uri.getScheme() + "://" + uri.getAuthority();
+            var name1 = ctx.formParamAsClass("url", String.class)
+                        .check(value -> {
+                            try {
+                                return UrlRepository.existsByName(name);
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }, "Страница уже существует")
+                        .get();
             var localDateTime = LocalDateTime.now();
             var url = new Url(name, localDateTime);
             UrlRepository.save(url);
-            //ctx.sessionAttribute("flash", "Пользователь успешно создан");
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
             ctx.redirect("/");
         } catch (ValidationException e) {
             var page = new BuildUrlPage(path, e.getErrors());
-            ctx.render("index.jte", model("page", page)).status(422);
+            ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.redirect("/");
+            //ctx.render("index.jte", model("page", page)).status(422);
+        } catch (MalformedURLException | URISyntaxException e) {
+            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.redirect("/");
         }
     }
 
     public static void build(Context ctx) {
         var page = new BuildUrlPage();
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("index.jte", model("page", page));
     }
 }
