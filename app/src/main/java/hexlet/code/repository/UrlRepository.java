@@ -4,21 +4,19 @@ import hexlet.code.model.Url;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class UrlRepository extends BaseRepository {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static void save(Url url) throws SQLException {
         var sql = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setString(2, url.getCreatedAt().format(formatter));
+            preparedStatement.setTimestamp(2, Timestamp.valueOf(url.getCreatedAt()));
             preparedStatement.executeUpdate();
             var generatedKey = preparedStatement.getGeneratedKeys();
             if (generatedKey.next()) {
@@ -37,9 +35,9 @@ public class UrlRepository extends BaseRepository {
             List<Url> urls = new ArrayList<>();
             while (resultSet.next()) {
                 var name = resultSet.getString("name");
-                var createdAt = resultSet.getString("created_at");
+                var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
-                var url = new Url(name, LocalDateTime.parse(createdAt, formatter));
+                var url = new Url(name, createdAt.toLocalDateTime());
                 url.setId(id);
                 urls.add(url);
             }
@@ -55,8 +53,8 @@ public class UrlRepository extends BaseRepository {
             var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 var name = resultSet.getString("name");
-                var createdAt = resultSet.getString("created_at");
-                var url = new Url(name, LocalDateTime.parse(createdAt, formatter));
+                var createdAt = resultSet.getTimestamp("created_at");
+                var url = new Url(name, createdAt.toLocalDateTime());
                 url.setId(id);
                 return Optional.of(url);
             }
@@ -73,9 +71,9 @@ public class UrlRepository extends BaseRepository {
             List<Url> urls = new ArrayList<>();
             if (resultSet.next()) {
                 var name1 = resultSet.getString("name");
-                var createdAt = resultSet.getString("created_at");
+                var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
-                var url = new Url(name1, LocalDateTime.parse(createdAt, formatter));
+                var url = new Url(name1, createdAt.toLocalDateTime());
                 url.setId(id);
                 urls.add(url);
             }
