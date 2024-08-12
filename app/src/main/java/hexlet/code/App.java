@@ -60,19 +60,11 @@ public class App {
             config.bundledPlugins.enableDevLogging();
         });
 
-        //app.get("/", ctx -> {
-        //    ctx.render("index.jte");
-        //});
-
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get("/", UrlsController::build);
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
         return app;
-    }
-
-    public static int getNum() {
-        return 5;
     }
 }
