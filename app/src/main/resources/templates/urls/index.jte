@@ -27,7 +27,6 @@ content = @`
                 <tr>
                     <th scope="row">${page.getUrls().indexOf(url) + 1}</th>
                     <td><a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a></td>
-
                 </tr>
                 </tbody>
             @endfor

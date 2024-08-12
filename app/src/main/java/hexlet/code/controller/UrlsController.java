@@ -21,6 +21,7 @@ public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls/index.jte", model("page", page));
     }
 
@@ -56,7 +57,6 @@ public class UrlsController {
             var page = new BuildUrlPage(path, e.getErrors());
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.redirect("/");
-            //ctx.render("index.jte", model("page", page)).status(422);
         } catch (MalformedURLException | URISyntaxException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.redirect("/");

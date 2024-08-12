@@ -4,13 +4,14 @@
 
 @template.layout.page(
 content = @`
-    <main class="flex-grow-1">
-    @if(page.getFlash() != null)
-        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success" role="alert">
-            <p class="m-0">${page.getFlash()}</p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    <main class="flax-grow-1">
+        @if(page.getFlash() != null)
+            <div class="rounded-0 m-0 alert alert-dismissible fade show alert-warning" role="alert">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <body >
             <section>
                 <div class="container-fluid bg-light p-5">
                     <div class="row">
@@ -21,8 +22,8 @@ content = @`
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-floating">
-                                            <input id="url-input" autofocus="" type="text" required="" name="url"
-                                                   aria-label="url" class="form-control w-100" placeholder="ссылка" autocomplete="off">
+                                            <input id="url-input" autofocus="" type="text" required="" name="url" aria-label="url"
+                                                   class="form-control w-100" placeholder="ссылка" autocomplete="off">
                                             <label for="url-input">Ссылка</label>
                                         </div>
                                     </div>
@@ -35,8 +36,8 @@ content = @`
                         </div>
                     </div>
                 </div>
-
             </section>
+        </body>
     </main>
 `
 )
