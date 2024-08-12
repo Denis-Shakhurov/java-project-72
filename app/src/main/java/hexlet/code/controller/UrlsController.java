@@ -54,11 +54,12 @@ public class UrlsController {
             ctx.redirect("/urls");
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
         } catch (ValidationException e) {
-            var page = new BuildUrlPage(path, e.getErrors());
             ctx.sessionAttribute("flash", "Страница уже существует");
+            ctx.status(422);
             ctx.redirect("/");
         } catch (MalformedURLException | URISyntaxException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.status(422);
             ctx.redirect("/");
         }
     }
