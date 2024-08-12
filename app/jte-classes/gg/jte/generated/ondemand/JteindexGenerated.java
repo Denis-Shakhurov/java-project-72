@@ -3,19 +3,19 @@ import hexlet.code.util.NamedRoutes;
 import hexlet.code.dto.BuildUrlPage;
 public final class JteindexGenerated {
 	public static final String JTE_NAME = "index.jte";
-	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,6,6,8,8,9,9,9,10,10,12,12,12,12,12,12,12,12,12,15,15,15,15,15,15,15,15,15,20,20,20,20,20,2,2,2,2};
+	public static final int[] JTE_LINE_INFO = {0,0,1,2,2,2,4,4,6,6,8,8,10,10,10,13,13,20,20,20,20,20,20,20,20,20,41,41,41,41,41,2,2,2,2};
 	public static void render(gg.jte.html.HtmlTemplateOutput jteOutput, gg.jte.html.HtmlInterceptor jteHtmlInterceptor, BuildUrlPage page) {
 		jteOutput.writeContent("\n");
 		gg.jte.generated.ondemand.layout.JtepageGenerated.render(jteOutput, jteHtmlInterceptor, new gg.jte.html.HtmlContent() {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
-				jteOutput.writeContent("\n    <main>\n    ");
+				jteOutput.writeContent("\n    <main class=\"flex-grow-1\">\n    ");
 				if (page.getFlash() != null) {
-					jteOutput.writeContent("\n        <div class=\"p-3 mb-2 bg-gradient-success text-success\">");
-					jteOutput.setContext("div", null);
+					jteOutput.writeContent("\n        <div class=\"rounded-0 m-0 alert alert-dismissible fade show alert-success\" role=\"alert\">\n            <p class=\"m-0\">");
+					jteOutput.setContext("p", null);
 					jteOutput.writeUserContent(page.getFlash());
-					jteOutput.writeContent("</div>\n    ");
+					jteOutput.writeContent("</p>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>\n        </div>\n    ");
 				}
-				jteOutput.writeContent("\n        <h1>Добро пожаловать!</h1>\n        <form");
+				jteOutput.writeContent("\n            <section>\n                <div class=\"container-fluid bg-light p-5\">\n                    <div class=\"row\">\n                        <div class=\"col-md-10 col-lg-8 mx-auto text-dark\">\n                            <h1 class=\"display-3 mb-0\">Анализатор страниц</h1>\n                            <p class=\"lead\">Бесплатно проверяйте сайты на SEO пригодность</p>\n                            <form");
 				var __jte_html_attribute_0 = NamedRoutes.urlsPath();
 				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_0)) {
 					jteOutput.writeContent(" action=\"");
@@ -24,16 +24,7 @@ public final class JteindexGenerated {
 					jteOutput.setContext("form", null);
 					jteOutput.writeContent("\"");
 				}
-				jteOutput.writeContent(" method=\"post\">\n            <div>\n                <label>\n                    <input type=\"text\" name=\"url\"");
-				var __jte_html_attribute_1 = page.getName();
-				if (gg.jte.runtime.TemplateUtils.isAttributeRendered(__jte_html_attribute_1)) {
-					jteOutput.writeContent(" value=\"");
-					jteOutput.setContext("input", "value");
-					jteOutput.writeUserContent(__jte_html_attribute_1);
-					jteOutput.setContext("input", null);
-					jteOutput.writeContent("\"");
-				}
-				jteOutput.writeContent("/> <input type=\"submit\" value=\"Добавить\" />\n                </label>\n            </div>\n        </form>\n    </main>\n");
+				jteOutput.writeContent(" method=\"post\" class=\"rss-form text-body\">\n                                <div class=\"row\">\n                                    <div class=\"col\">\n                                        <div class=\"form-floating\">\n                                            <input id=\"url-input\" autofocus=\"\" type=\"text\" required=\"\" name=\"url\"\n                                                   aria-label=\"url\" class=\"form-control w-100\" placeholder=\"ссылка\" autocomplete=\"off\">\n                                            <label for=\"url-input\">Ссылка</label>\n                                        </div>\n                                    </div>\n                                    <div class=\"col-auto\">\n                                        <button type=\"submit\" class=\"h-100 btn btn-lg btn-primary px-sm-5\">Проверить</button>\n                                    </div>\n                                </div>\n                            </form>\n                            <p class=\"mt-2 mb-0 text-muted\">Пример: https://www.example.com</p>\n                        </div>\n                    </div>\n                </div>\n\n            </section>\n    </main>\n");
 			}
 		});
 	}

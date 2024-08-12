@@ -50,8 +50,8 @@ public class UrlsController {
             var localDateTime = LocalDateTime.now();
             var url = new Url(name, localDateTime);
             UrlRepository.save(url);
+            ctx.redirect("/urls");
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            ctx.redirect("/");
         } catch (ValidationException e) {
             var page = new BuildUrlPage(path, e.getErrors());
             ctx.sessionAttribute("flash", "Страница уже существует");

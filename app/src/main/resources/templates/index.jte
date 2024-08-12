@@ -4,18 +4,39 @@
 
 @template.layout.page(
 content = @`
-    <main>
+    <main class="flex-grow-1">
     @if(page.getFlash() != null)
-        <div class="p-3 mb-2 bg-gradient-success text-success">${page.getFlash()}</div>
+        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-success" role="alert">
+            <p class="m-0">${page.getFlash()}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
-        <h1>Добро пожаловать!</h1>
-        <form action="${NamedRoutes.urlsPath()}" method="post">
-            <div>
-                <label>
-                    <input type="text" name="url" value="${page.getName()}"/> <input type="submit" value="Добавить" />
-                </label>
-            </div>
-        </form>
+            <section>
+                <div class="container-fluid bg-light p-5">
+                    <div class="row">
+                        <div class="col-md-10 col-lg-8 mx-auto text-dark">
+                            <h1 class="display-3 mb-0">Анализатор страниц</h1>
+                            <p class="lead">Бесплатно проверяйте сайты на SEO пригодность</p>
+                            <form action="${NamedRoutes.urlsPath()}" method="post" class="rss-form text-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-floating">
+                                            <input id="url-input" autofocus="" type="text" required="" name="url"
+                                                   aria-label="url" class="form-control w-100" placeholder="ссылка" autocomplete="off">
+                                            <label for="url-input">Ссылка</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="h-100 btn btn-lg btn-primary px-sm-5">Проверить</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="mt-2 mb-0 text-muted">Пример: https://www.example.com</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
     </main>
 `
 )

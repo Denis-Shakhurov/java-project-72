@@ -1,0 +1,57 @@
+import hexlet.code.App;
+import hexlet.code.model.Url;
+import hexlet.code.repository.UrlRepository;
+import io.javalin.Javalin;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import io.javalin.testtools.JavalinTest;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+public class AppTest {
+    Javalin app;
+
+    @BeforeEach
+    public final void setUp() throws IOException, SQLException {
+        app = App.getApp();
+    }
+
+    @Test
+    public void testMainPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/");
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("Анализатор страниц");
+        });
+    }
+
+    @Test
+    public void testUrlsPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls");
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    void testUrlNotFound() throws Exception {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls/999999");
+            assertThat(response.code()).isEqualTo(404);
+        });
+    }
+
+    @Test
+    public void testUrlPage() throws SQLException {
+        var car = new Url("https://regex101.com", LocalDateTime.now());
+        UrlRepository.save(car);
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls/" + car.getId());
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+}
