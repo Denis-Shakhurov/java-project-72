@@ -47,10 +47,10 @@ public class AppTest {
 
     @Test
     public void testUrlPage() throws SQLException {
-        var car = new Url("https://regex101.com", LocalDateTime.now());
-        UrlRepository.save(car);
+        var url = new Url("https://regex101.com", LocalDateTime.now());
+        UrlRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
-            var response = client.get("/urls/" + car.getId());
+            var response = client.get("/urls/" + url.getId());
             assertThat(response.code()).isEqualTo(200);
         });
     }
