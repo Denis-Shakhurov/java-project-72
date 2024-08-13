@@ -23,9 +23,9 @@ public class UrlChecksController {
         var urlName = url.getName();
         var jsonResponse = Unirest.get(urlName).asString();
         var statusCode = jsonResponse.getStatus();
-        var title = findText(urlName,"title");
-        var h1 = findText(urlName,"h1");
-        var description = findText(urlName,"description");
+        var title = findText(urlName, "title");
+        var h1 = findText(urlName, "h1");
+        var description = findText(urlName, "description");
         var createdAt = LocalDateTime.now();
         var urlCheck = new UrlCheck(statusCode, h1, title, description, urlId, createdAt);
         UrlCheckRepository.save(urlCheck);
@@ -41,7 +41,7 @@ public class UrlChecksController {
             case "description" :
                 return document.selectFirst("meta[name=description]") == null ? ""
                         : document.selectFirst("meta[name=description]").attr("content");
-            default:return "";
+            default : return "";
         }
     }
 }
