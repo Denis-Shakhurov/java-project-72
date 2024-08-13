@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.controller.UrlChecksController;
 import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.util.NamedRoutes;
@@ -64,6 +65,8 @@ public class App {
         app.get("/", UrlsController::build);
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
+
+        app.post(NamedRoutes.checksUrlPath("{id}"), UrlChecksController::create);
 
         return app;
     }

@@ -1,9 +1,11 @@
 package hexlet.code.controller;
 
 import hexlet.code.dto.BuildUrlPage;
+import hexlet.code.dto.UrlChecksPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
@@ -29,7 +31,12 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var page = new UrlPage(url);
+        var checks = UrlCheckRepository.getEntities(id);
+        var name = url.getName();
+        var createdAt = url.getCreatedAt();
+        var url1 = new Url(name, createdAt, checks);
+        url1.setId(id);
+        var page = new UrlPage(url1);
         ctx.render("urls/show.jte", model("page", page));
     }
 

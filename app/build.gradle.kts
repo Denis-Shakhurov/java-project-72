@@ -28,6 +28,11 @@ dependencies {
     implementation("io.javalin:javalin-bundle:6.1.3")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("com.h2database:h2:2.2.220")
+    implementation(platform("com.konghq:unirest-java-bom:4.3.0"))
+    implementation("com.konghq:unirest-java-core")
+    implementation("com.konghq:unirest-modules-gson")
+    implementation("com.konghq:unirest-modules-jackson")
+    implementation ("org.jsoup:jsoup:1.15.3")
 }
 
 application {
