@@ -30,7 +30,7 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var checks = UrlCheckRepository.getEntities(id);
+        var checks = UrlCheckRepository.getEntitiesByUrlId(id);
         var name = url.getName();
         var createdAt = url.getCreatedAt();
         var url1 = new Url(name, createdAt, checks);

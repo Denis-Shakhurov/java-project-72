@@ -111,7 +111,7 @@ public class AppTest {
             client.post("/urls", requestBody);
             client.post("/urls/1/checks");
 
-            var urlCheck = UrlCheckRepository.getEntities(1L).getFirst();
+            var urlCheck = UrlCheckRepository.getEntitiesByUrlId(1L).getFirst();
 
             assertThat(urlCheck.getStatusCode()).isEqualTo(200);
             assertThat(urlCheck.getH1()).contains("h1");
