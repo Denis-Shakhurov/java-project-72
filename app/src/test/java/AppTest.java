@@ -5,10 +5,7 @@ import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import io.javalin.testtools.JavalinTest;
 
 import java.io.IOException;
@@ -44,6 +41,28 @@ public class AppTest {
     @BeforeEach
     public final void setUp() throws IOException, SQLException {
         app = App.getApp();
+    }
+
+    @Nested
+    class RootTest {
+        @Test
+        void testIndex() {
+            JavalinTest.test(app, (server, client) -> {
+                assertThat(client.get("/").code()).isEqualTo(200);
+            });
+        }
+    }
+
+    @Nested
+    class UrlTest {
+
+        @Test
+        void testIndex() {
+            JavalinTest.test(app, (server, client) -> {
+                var response = client.get("/urls");
+                assertThat(response.code()).isEqualTo(200);
+            });
+        }
     }
 
     @Test
