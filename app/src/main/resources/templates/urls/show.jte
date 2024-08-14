@@ -21,7 +21,7 @@ content = @`
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td>${String.valueOf(page.getUrl().getCreatedAt())}</td>
+                    <td>${page.getUrl().dateFormat(page.getUrl().getCreatedAt())}</td>
                 </tr>
                 </tbody>
             </table>
@@ -59,7 +59,7 @@ content = @`
                         ${checkUrl.getDescription()}
                     </td>
                     <td>
-                        ${String.valueOf(checkUrl.getCreatedAt())}
+                        ${page.getUrl().dateFormat(checkUrl.getCreatedAt())}
                     </td>
                 </tr>
 

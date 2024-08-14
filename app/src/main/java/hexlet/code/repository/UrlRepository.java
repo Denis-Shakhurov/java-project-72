@@ -37,7 +37,8 @@ public class UrlRepository extends BaseRepository {
                 var name = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
-                var url = new Url(name, createdAt.toLocalDateTime());
+                var checks = UrlCheckRepository.getEntities(id);
+                var url = new Url(name, createdAt.toLocalDateTime(), checks);
                 url.setId(id);
                 urls.add(url);
             }

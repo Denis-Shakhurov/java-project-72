@@ -11,8 +11,8 @@ import java.util.List;
 public class UrlCheckRepository extends BaseRepository {
 
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        var sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)"
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, urlCheck.getUrlId());
@@ -32,7 +32,7 @@ public class UrlCheckRepository extends BaseRepository {
     }
 
     public static List<UrlCheck> getEntities(Long urlId) throws SQLException {
-        var sql = "SELECT * FROM url_checks WHERE url_id = ?";
+        var sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, urlId);
