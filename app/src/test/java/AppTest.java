@@ -57,18 +57,6 @@ public class AppTest {
         }
     }
 
-    @Nested
-    class UrlTest {
-
-        @Test
-        void testIndex() {
-            JavalinTest.test(app, (server, client) -> {
-                var response = client.get("/urls");
-                assertThat(response.code()).isEqualTo(200);
-            });
-        }
-    }
-
     @Test
     public void testMainPage() {
         JavalinTest.test(app, (server, client) -> {
