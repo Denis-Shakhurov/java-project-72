@@ -1,5 +1,6 @@
 import hexlet.code.App;
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import okhttp3.mockwebserver.MockResponse;
@@ -90,7 +91,19 @@ public class AppTest {
         });
     }
 
-    /*@Test
+    @Test
+    public void testCreateUrl() throws SQLException {
+        var url = new Url("https://sky.pro/wiki/", LocalDateTime.now());
+        UrlRepository.save(url);
+        JavalinTest.test(app, (server, client) -> {
+            client.post("/urls/");
+
+            var url1 = UrlRepository.find(1L).get();
+            assertThat(url1.getName().contains("https://sky.pro/wiki/"));
+        });
+    }
+
+    @Test
     public void testUrlCheckContent() {
         var baseUrl = mockBackEnd.url("/").toString();
         JavalinTest.test(app, (server, client) -> {
@@ -105,7 +118,7 @@ public class AppTest {
             assertThat(urlCheck.getTitle()).contains("Title");
             assertThat(urlCheck.getDescription()).contains("Test MockWebServer");
         });
-    }*/
+    }
 
     @Test
     public void testAddWrongUrl() {
