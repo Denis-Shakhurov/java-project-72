@@ -25,9 +25,8 @@ public class App {
     }
 
     private static String getDataBaseUrl() {
-        String dataBaseUrl = System.getenv()
-                .getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
-        return dataBaseUrl;
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL",
+                "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
     }
 
     public static void main(String[] args) throws IOException, SQLException {
