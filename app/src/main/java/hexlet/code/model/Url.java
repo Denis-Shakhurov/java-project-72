@@ -1,6 +1,5 @@
 package hexlet.code.model;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
