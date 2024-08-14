@@ -24,10 +24,4 @@ public class Url {
         this.createdAt = createdAt;
         this.urlChecks = urlChecks;
     }
-
-    public String dateFormat(LocalDateTime lcd) {
-        String date = lcd.toLocalDate().toString();
-        String time = lcd.toLocalTime().toString().substring(0, 5);
-        return date + " " + time;
-    }
 }

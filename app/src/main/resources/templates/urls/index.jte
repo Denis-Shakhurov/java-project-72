@@ -1,5 +1,6 @@
 @import hexlet.code.dto.UrlsPage
 @import hexlet.code.util.NamedRoutes
+@import hexlet.code.util.UtilsDateTime
 @param UrlsPage page
 
 @template.layout.page(
@@ -32,7 +33,7 @@ content = @`
                         <tr>
                             <th scope="row">${page.getUrls().indexOf(url) + 1}</th>
                             <td><a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a></td>
-                            <th scope="row">${url.getUrlChecks().isEmpty() ? "" : url.dateFormat(url.getUrlChecks().getLast().getCreatedAt())}</th>
+                            <th scope="row">${url.getUrlChecks().isEmpty() ? "" : UtilsDateTime.dateFormatter(url.getUrlChecks().getLast().getCreatedAt())}</th>
                             <th scope="row">${url.getUrlChecks().isEmpty() ? "" : String.valueOf(url.getUrlChecks().getLast().getStatusCode())}</th>
                         </tr>
                         </tbody>
