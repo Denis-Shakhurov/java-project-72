@@ -25,8 +25,8 @@ public class UrlChecksController {
         var jsonResponse = Unirest.get(urlName).asString();
         var body = jsonResponse.getBody();
         var statusCode = jsonResponse.getStatus();
-        var title = findText(body, "h1");
-        var h1 = findText(body, "title");
+        var title = findText(body, "title");
+        var h1 = findText(body, "h1");
         var description = findText(body, "description");
         var createdAt = LocalDateTime.now();
         var urlCheck = new UrlCheck(statusCode, h1, title, description, urlId, createdAt);
@@ -38,11 +38,10 @@ public class UrlChecksController {
         Document document = Jsoup.parse(body);
         switch (tag) {
             case "title" : return document.title();
-            case "h1" : return document.selectFirst(tag) == null ? ""
-                : Objects.requireNonNull(document.selectFirst(tag)).text();
+            case "h1" : return Objects.requireNonNull(document.selectFirst(tag)).text();
             case "description" :
-                return document.selectFirst("meta[name=" + tag + "]") == null ? ""
-                        : Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]")).attr("content");
+                return Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]"))
+                        .attr("content");
             default : return "";
         }
     }
