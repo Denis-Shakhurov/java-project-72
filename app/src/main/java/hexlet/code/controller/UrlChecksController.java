@@ -13,6 +13,7 @@ import org.jsoup.nodes.Document;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class UrlChecksController {
 
@@ -38,10 +39,10 @@ public class UrlChecksController {
         switch (tag) {
             case "title" : return document.title();
             case "h1" : return document.selectFirst(tag) == null ? ""
-                : document.selectFirst(tag).text();
+                : Objects.requireNonNull(document.selectFirst(tag)).text();
             case "description" :
                 return document.selectFirst("meta[name=" + tag + "]") == null ? ""
-                        : document.selectFirst("meta[name=" + tag + "]").attr("content");
+                        : Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]")).attr("content");
             default : return "";
         }
     }

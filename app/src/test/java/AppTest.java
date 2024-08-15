@@ -125,9 +125,9 @@ public class AppTest {
             var urlCheck = UrlCheckRepository.getEntitiesByUrlId(1L).getFirst();
 
             assertThat(urlCheck.getStatusCode()).isEqualTo(200);
-            assertThat(urlCheck.getH1()).contains("h1");
-            assertThat(urlCheck.getTitle()).contains("Title");
-            assertThat(urlCheck.getDescription()).contains("Test MockWebServer");
+            assertThat(urlCheck.getH1()).isEqualTo("h1");
+            assertThat(urlCheck.getTitle()).isEqualTo("Title");
+            assertThat(urlCheck.getDescription()).isEqualTo("Test MockWebServer");
         });
     }
 
