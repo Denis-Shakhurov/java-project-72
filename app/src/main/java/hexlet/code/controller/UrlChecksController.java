@@ -29,7 +29,7 @@ public class UrlChecksController {
         var h1 = findText(body, "h1");
         var description = findText(body, "description");
         var createdAt = LocalDateTime.now();
-        var urlCheck = new UrlCheck(statusCode, h1, title, description, urlId, createdAt);
+        var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
         UrlCheckRepository.save(urlCheck);
         ctx.redirect(NamedRoutes.urlPath(urlId));
     }
