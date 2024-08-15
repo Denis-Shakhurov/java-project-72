@@ -37,11 +37,11 @@ public class UrlChecksController {
         Document document = Jsoup.parse(body);
         switch (tag) {
             case "title" : return document.title();
-            case "h1" : return document.selectFirst("h1") == null ? ""
-                : document.selectFirst("h1").text();
+            case "h1" : return document.selectFirst(tag) == null ? ""
+                : document.selectFirst(tag).text();
             case "description" :
-                return document.selectFirst("meta[name=description]") == null ? ""
-                        : document.selectFirst("meta[name=description]").attr("content");
+                return document.selectFirst("meta[name=" + tag + "]") == null ? ""
+                        : document.selectFirst("meta[name=" + tag + "]").attr("content");
             default : return "";
         }
     }
