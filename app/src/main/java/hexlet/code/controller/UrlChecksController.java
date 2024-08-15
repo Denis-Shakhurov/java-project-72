@@ -25,8 +25,8 @@ public class UrlChecksController {
         var jsonResponse = Unirest.get(urlName).asString();
         var body = jsonResponse.getBody();
         var statusCode = jsonResponse.getStatus();
-        var title = findText(body, "title");
-        var h1 = findText(body, "h1");
+        var title = findText(body, "h1");
+        var h1 = findText(body, "title");
         var description = findText(body, "description");
         var createdAt = LocalDateTime.now();
         var urlCheck = new UrlCheck(statusCode, h1, title, description, urlId, createdAt);
@@ -34,7 +34,7 @@ public class UrlChecksController {
         ctx.redirect(NamedRoutes.urlPath(urlId));
     }
 
-    public static String findText(String body, String tag) {
+    private static String findText(String body, String tag) {
         Document document = Jsoup.parse(body);
         switch (tag) {
             case "title" : return document.title();
