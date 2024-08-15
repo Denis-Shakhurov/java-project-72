@@ -4,7 +4,6 @@ import hexlet.code.model.Url;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public class UrlRepository extends BaseRepository {
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setTimestamp(2, Timestamp.valueOf(url.getCreatedAt()));
+            preparedStatement.setTimestamp(2, url.getCreatedAt());
             preparedStatement.executeUpdate();
             var generatedKey = preparedStatement.getGeneratedKeys();
             if (generatedKey.next()) {
@@ -38,7 +37,7 @@ public class UrlRepository extends BaseRepository {
                 var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
                 var checks = UrlCheckRepository.getEntitiesByUrlId(id);
-                var url = new Url(name, createdAt.toLocalDateTime(), checks);
+                var url = new Url(name, createdAt, checks);
                 url.setId(id);
                 urls.add(url);
             }
@@ -55,7 +54,7 @@ public class UrlRepository extends BaseRepository {
             if (resultSet.next()) {
                 var name = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
-                var url = new Url(name, createdAt.toLocalDateTime());
+                var url = new Url(name, createdAt);
                 url.setId(id);
                 return Optional.of(url);
             }
@@ -74,7 +73,7 @@ public class UrlRepository extends BaseRepository {
                 var name1 = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
-                var url = new Url(name1, createdAt.toLocalDateTime());
+                var url = new Url(name1, createdAt);
                 url.setId(id);
                 urls.add(url);
             }

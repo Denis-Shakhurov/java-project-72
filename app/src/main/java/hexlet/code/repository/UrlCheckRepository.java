@@ -4,7 +4,6 @@ import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class UrlCheckRepository extends BaseRepository {
             stmt.setString(3, urlCheck.getH1());
             stmt.setString(4, urlCheck.getDescription());
             stmt.setLong(5, urlCheck.getUrlId());
-            stmt.setTimestamp(6, Timestamp.valueOf(urlCheck.getCreatedAt()));
+            stmt.setTimestamp(6, urlCheck.getCreatedAt());
             stmt.executeUpdate();
             var generatedKey = stmt.getGeneratedKeys();
             if (generatedKey.next()) {
@@ -46,7 +45,7 @@ public class UrlCheckRepository extends BaseRepository {
                 var description = resultSet.getString("description");
                 var createdAt = resultSet.getTimestamp("created_at");
                 var id = resultSet.getLong("id");
-                var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt.toLocalDateTime());
+                var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
                 urlCheck.setId(id);
                 urlChecks.add(urlCheck);
             }

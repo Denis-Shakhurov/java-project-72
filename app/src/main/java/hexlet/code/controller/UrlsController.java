@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -54,8 +55,8 @@ public class UrlsController {
                             }
                         }, "Страница уже существует")
                         .get();
-            var localDateTime = LocalDateTime.now();
-            var url = new Url(name, localDateTime);
+            var createAt = Timestamp.valueOf(LocalDateTime.now());
+            var url = new Url(name, createAt);
             UrlRepository.save(url);
             ctx.redirect("/urls");
             ctx.sessionAttribute("flash", "Страница успешно добавлена");
