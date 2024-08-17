@@ -44,25 +44,20 @@ public class UrlsController {
         try {
             var urlPath = new URL(path);
             var uri = urlPath.toURI();
-            //if (uri.isOpaque()) {
-                var name = uri.getScheme() + "://" + uri.getAuthority();
-                var name1 = ctx.formParamAsClass("url", String.class)
-                        .check(value -> {
-                            try {
-                                return UrlRepository.existsByName(name);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }, "Страница уже существует")
-                        .get();
-                var url = new Url(name);
-                UrlRepository.save(url);
-                ctx.redirect("/urls");
-                ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            //} else {
-              //  ctx.redirect("/");
-              //  ctx.sessionAttribute("flash", "По указанному адресу страница не существует");
-            //}
+            var name = uri.getScheme() + "://" + uri.getAuthority();
+            var name1 = ctx.formParamAsClass("url", String.class)
+                    .check(value -> {
+                        try {
+                            return UrlRepository.existsByName(name);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }, "Страница уже существует")
+                    .get();
+            var url = new Url(name);
+            UrlRepository.save(url);
+            ctx.redirect("/urls");
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
         } catch (ValidationException e) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.status(422);

@@ -23,9 +23,4 @@ public class Url {
         this.name = name;
         this.urlChecks = urlChecks;
     }
-
-    public Url(String name, UrlCheck urlCheck) {
-        this.name = name;
-        this.urlCheck = urlCheck;
-    }
 }
