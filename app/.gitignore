@@ -3,7 +3,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-./.idea
+app/.idea/
+app/jte-classes/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
