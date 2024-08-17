@@ -35,7 +35,7 @@ public class UrlChecksController {
     private static String findText(String body, String tag) {
         Document document = Jsoup.parse(body);
         switch (tag) {
-            case "title" : return document.title();
+            case "title" : return Objects.requireNonNull(document.title());
             case "h1" : return Objects.requireNonNull(document.selectFirst(tag)).text();
             case "description" :
                 return Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]"))
