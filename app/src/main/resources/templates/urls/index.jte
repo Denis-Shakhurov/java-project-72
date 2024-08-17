@@ -33,8 +33,8 @@ content = @`
                         <tr>
                             <th scope="row">${page.getUrls().indexOf(url) + 1}</th>
                             <td><a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a></td>
-                            <th scope="row">${url.getUrlChecks().isEmpty() ? "" : UtilsDateTime.dateFormatter(url.getUrlChecks().getLast().getCreatedAt())}</th>
-                            <th scope="row">${url.getUrlChecks().isEmpty() ? "" : String.valueOf(url.getUrlChecks().getLast().getStatusCode())}</th>
+                            <th scope="row">${page.getUrlChecks().isEmpty() ? "" : UtilsDateTime.dateFormatter(page.getUrlChecks().get(url.getId()).getCreatedAt())}</th>
+                            <th scope="row">${page.getUrlChecks().isEmpty() ? "" : String.valueOf(page.getUrlChecks().get(url.getId()).getStatusCode())}</th>
                         </tr>
                         </tbody>
                     @endfor

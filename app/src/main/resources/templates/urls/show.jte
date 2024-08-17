@@ -41,7 +41,7 @@ content = @`
                     <th>description</th>
                     <th class="col-2">Дата проверки</th>
                 </tr></thead>
-                @for(var checkUrl : page.getUrl().getUrlChecks())
+                @for(var checkUrl : page.getUrlChecks())
                 <tbody>
                 <tr>
                     <td>
