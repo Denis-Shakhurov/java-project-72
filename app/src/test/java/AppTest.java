@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -85,7 +83,7 @@ public class AppTest {
 
     @Test
     public void testUrlPage() throws SQLException {
-        var url = new Url("https://regex101.com", Timestamp.valueOf(LocalDateTime.now()));
+        var url = new Url("https://regex101.com");
         UrlRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/" + url.getId());
@@ -95,7 +93,7 @@ public class AppTest {
 
     @Test
     public void testUrlCheckNotFound() throws Exception {
-        var url = new Url("https://regex101.com", Timestamp.valueOf(LocalDateTime.now()));
+        var url = new Url("https://regex101.com");
         UrlRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/urls/1/check");
@@ -105,7 +103,7 @@ public class AppTest {
 
     @Test
     public void testCreateUrl() throws SQLException {
-        var url = new Url("https://sky.pro/wiki/", Timestamp.valueOf(LocalDateTime.now()));
+        var url = new Url("https://sky.pro/wiki/");
         UrlRepository.save(url);
         JavalinTest.test(app, (server, client) -> {
             client.post("/urls/");
