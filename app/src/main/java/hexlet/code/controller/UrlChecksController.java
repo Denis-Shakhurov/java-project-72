@@ -12,8 +12,6 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class UrlChecksController {
@@ -29,8 +27,7 @@ public class UrlChecksController {
         var title = findText(body, "title");
         var h1 = findText(body, "h1");
         var description = findText(body, "description");
-        var createdAt = Timestamp.valueOf(LocalDateTime.now());
-        var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId, createdAt);
+        var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
         UrlCheckRepository.save(urlCheck);
         ctx.redirect(NamedRoutes.urlPath(urlId));
     }

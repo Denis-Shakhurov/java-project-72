@@ -14,15 +14,14 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        var page = new UrlsPage(urls);
+        var urlChecks = UrlCheckRepository.getLastChecks();
+        var page = new UrlsPage(urls, urlChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls/index.jte", model("page", page));
     }
@@ -31,12 +30,12 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Entity with id = " + id + " not found"));
-        var checks = UrlCheckRepository.getEntitiesByUrlId(id);
         var name = url.getName();
-        var createdAt = url.getCreatedAt();
-        var url1 = new Url(name, createdAt, checks);
-        url1.setId(id);
-        var page = new UrlPage(url1);
+        var urlShow = new Url(name);
+        urlShow.setId(id);
+        urlShow.setCreatedAt(url.getCreatedAt());
+        var urlChecks = UrlCheckRepository.getEntitiesByUrlId(id);
+        var page = new UrlPage(urlShow, urlChecks);
         ctx.render("urls/show.jte", model("page", page));
     }
 
@@ -45,7 +44,7 @@ public class UrlsController {
         try {
             var urlPath = new URL(path);
             var uri = urlPath.toURI();
-            if (uri.isOpaque()) {
+            //if (uri.isOpaque()) {
                 var name = uri.getScheme() + "://" + uri.getAuthority();
                 var name1 = ctx.formParamAsClass("url", String.class)
                         .check(value -> {
@@ -56,15 +55,14 @@ public class UrlsController {
                             }
                         }, "Страница уже существует")
                         .get();
-                var createAt = Timestamp.valueOf(LocalDateTime.now());
-                var url = new Url(name, createAt);
+                var url = new Url(name);
                 UrlRepository.save(url);
                 ctx.redirect("/urls");
                 ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            } else {
-                ctx.redirect("/");
-                ctx.sessionAttribute("flash", "По указанному адресу страница не существует");
-            }
+            //} else {
+              //  ctx.redirect("/");
+              //  ctx.sessionAttribute("flash", "По указанному адресу страница не существует");
+            //}
         } catch (ValidationException e) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.status(422);
