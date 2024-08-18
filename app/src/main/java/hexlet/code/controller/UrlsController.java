@@ -9,8 +9,11 @@ import hexlet.code.repository.UrlRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -43,10 +46,9 @@ public class UrlsController {
     public static void create(Context ctx) {
         String path = ctx.formParam("url");
         try {
-            if (isAvailable(path)) {
-                var urlPath = new URL(path);
-                var uri = urlPath.toURI();
+                var uri = new URL(path).toURI();
                 var name = uri.getScheme() + "://" + uri.getAuthority();
+            if (isAvailable(name)) {
                 var name1 = ctx.formParamAsClass("url", String.class)
                         .check(value -> {
                             try {
@@ -60,6 +62,8 @@ public class UrlsController {
                 UrlRepository.save(url);
                 ctx.redirect("/urls");
                 ctx.sessionAttribute("flash", "Страница успешно добавлена");
+            } else {
+                throw new RuntimeException();
             }
         } catch (ValidationException e) {
             ctx.sessionAttribute("flash", "Страница уже существует");
@@ -82,15 +86,9 @@ public class UrlsController {
     }
 
     private static boolean isAvailable(String url) throws Exception {
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("HEAD");
-            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet request = new HttpGet(url);
+        CloseableHttpResponse response = httpClient.execute(request);
+        return response.getStatusLine().getStatusCode() == 200;
     }
 }
