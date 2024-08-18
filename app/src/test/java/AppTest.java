@@ -1,5 +1,6 @@
 import hexlet.code.App;
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import okhttp3.mockwebserver.MockResponse;
@@ -112,7 +113,7 @@ public class AppTest {
         });
     }
 
-    /*@Test
+    @Test
     public void testUrlCheckContent() throws Exception {
         var baseUrl = mockBackEnd.url("/").toString();
         JavalinTest.test(app, (server, client) -> {
@@ -127,7 +128,7 @@ public class AppTest {
             assertThat(urlCheck.getTitle()).isEqualTo("Title");
             assertThat(urlCheck.getDescription()).isEqualTo("Test MockWebServer");
         });
-    }*/
+    }
 
     @Test
     public void testAddWrongUrl() {

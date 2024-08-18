@@ -92,9 +92,10 @@ public class UrlsController {
         }
     }
 
-    private static String parseUrl(String path) throws MalformedURLException, URISyntaxException, Exception {
+    private static String parseUrl(String path) throws Exception {
         var url = new URI(path).toURL();
         var name = url.getProtocol() + "://" + url.getAuthority();
-        return isValidUrl(name) ? name : null;
+        //return isValidUrl(name) ? name : null;
+        return name;
     }
 }
