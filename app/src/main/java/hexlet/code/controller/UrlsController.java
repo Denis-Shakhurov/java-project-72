@@ -10,7 +10,10 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -76,7 +79,7 @@ public class UrlsController {
         ctx.render("index.jte", model("page", page));
     }
 
-    private static boolean isValidUrl(String url) throws Exception{
+    private static boolean isValidUrl(String url) throws Exception {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) new URI(url).toURL().openConnection();
