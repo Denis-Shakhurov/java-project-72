@@ -1,5 +1,6 @@
 import hexlet.code.App;
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import okhttp3.mockwebserver.MockResponse;

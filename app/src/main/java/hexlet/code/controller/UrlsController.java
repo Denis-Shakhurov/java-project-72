@@ -9,15 +9,8 @@ import hexlet.code.repository.UrlRepository;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.sql.SQLException;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -47,9 +40,8 @@ public class UrlsController {
     public static void create(Context ctx) {
         String path = ctx.formParam("url");
         try {
-            var uri = new URL(path).toURI();
-            var name = uri.getScheme() + "://" + uri.getAuthority();
-            if (isAvailable(name)) {
+            var name = parseUrl(path);
+            if (name != null) {
                 var name1 = ctx.formParamAsClass("url", String.class)
                         .check(value -> {
                             try {
@@ -63,8 +55,6 @@ public class UrlsController {
                 UrlRepository.save(url);
                 ctx.redirect("/urls");
                 ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            } else {
-                throw new RuntimeException();
             }
         } catch (ValidationException e) {
             ctx.sessionAttribute("flash", "Страница уже существует");
@@ -86,15 +76,22 @@ public class UrlsController {
         ctx.render("index.jte", model("page", page));
     }
 
-    private static boolean isAvailable(String url) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet(url);
-        CloseableHttpResponse response = null;
+    private static boolean isValidUrl(String url) throws Exception{
+        HttpURLConnection connection = null;
         try {
-            response = httpClient.execute(request);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            connection = (HttpURLConnection) new URI(url).toURL().openConnection();
+            connection.setRequestMethod("HEAD");
+            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-        return response.getStatusLine().getStatusCode() == 200;
+    }
+
+    private static String parseUrl(String path) throws MalformedURLException, URISyntaxException, Exception {
+        var url = new URI(path).toURL();
+        var name = url.getProtocol() + "://" + url.getAuthority();
+        return isValidUrl(name) ? name : null;
     }
 }
