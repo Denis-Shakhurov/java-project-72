@@ -14,6 +14,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,8 +47,8 @@ public class UrlsController {
     public static void create(Context ctx) {
         String path = ctx.formParam("url");
         try {
-                var uri = new URL(path).toURI();
-                var name = uri.getScheme() + "://" + uri.getAuthority();
+            var uri = new URL(path).toURI();
+            var name = uri.getScheme() + "://" + uri.getAuthority();
             if (isAvailable(name)) {
                 var name1 = ctx.formParamAsClass("url", String.class)
                         .check(value -> {
@@ -85,10 +86,15 @@ public class UrlsController {
         ctx.render("index.jte", model("page", page));
     }
 
-    private static boolean isAvailable(String url) throws Exception {
+    private static boolean isAvailable(String url) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet request = new HttpGet(url);
-        CloseableHttpResponse response = httpClient.execute(request);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(request);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return response.getStatusLine().getStatusCode() == 200;
     }
 }
