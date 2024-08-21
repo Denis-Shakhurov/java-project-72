@@ -10,7 +10,6 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,38 +36,36 @@ public class UrlsController {
         urlShow.setCreatedAt(url.getCreatedAt());
         var urlChecks = UrlCheckRepository.getEntitiesByUrlId(id);
         var page = new UrlPage(urlShow, urlChecks);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("urls/show.jte", model("page", page));
     }
 
-    public static void create(Context ctx) {
+    public static void create(Context ctx) throws SQLException{
         String path = ctx.formParam("url");
         try {
-            var name = parseUrl(path);
-            if (name != null) {
-                var name1 = ctx.formParamAsClass("url", String.class)
-                        .check(value -> {
-                            try {
-                                return UrlRepository.existsByName(name);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
+            var urlPath = new URI(path).toURL();
+            var name = urlPath.getProtocol() + "://" + urlPath.getAuthority();
+            var name1 = ctx.formParamAsClass("url", String.class)
+                    .check(value -> {
+                        try {
+                            return UrlRepository.existsByName(name);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                         }, "Страница уже существует")
                         .get();
-                var url = new Url(name);
-                UrlRepository.save(url);
-                ctx.redirect("/urls");
-                ctx.sessionAttribute("flash", "Страница успешно добавлена");
-            }
+            var url = new Url(name);
+            UrlRepository.save(url);
+            ctx.redirect("/urls");
+            ctx.sessionAttribute("flash", "Страница успешно добавлена");
+
         } catch (ValidationException e) {
             ctx.sessionAttribute("flash", "Страница уже существует");
             ctx.status(422);
             ctx.redirect("/");
-        } catch (MalformedURLException | URISyntaxException e) {
+        } catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
             ctx.status(422);
-            ctx.redirect("/");
-        } catch (Exception e) {
-            ctx.sessionAttribute("flash", "Страница не доступна");
             ctx.redirect("/");
         }
     }
@@ -77,25 +74,5 @@ public class UrlsController {
         var page = new BuildUrlPage();
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("index.jte", model("page", page));
-    }
-
-    private static boolean isValidUrl(String url) throws Exception {
-        HttpURLConnection connection = null;
-        try {
-            connection = (HttpURLConnection) new URI(url).toURL().openConnection();
-            connection.setRequestMethod("HEAD");
-            return connection.getResponseCode() == HttpURLConnection.HTTP_OK;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    private static String parseUrl(String path) throws Exception {
-        var url = new URI(path).toURL();
-        var name = url.getProtocol() + "://" + url.getAuthority();
-        //return isValidUrl(name) ? name : null;
-        return name;
     }
 }
