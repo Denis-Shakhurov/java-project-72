@@ -40,7 +40,7 @@ public class UrlsController {
         ctx.render("urls/show.jte", model("page", page));
     }
 
-    public static void create(Context ctx) throws SQLException{
+    public static void create(Context ctx) throws SQLException {
         String path = ctx.formParam("url");
         try {
             var urlPath = new URI(path).toURL();
@@ -52,8 +52,7 @@ public class UrlsController {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-                        }, "Страница уже существует")
-                        .get();
+                    }, "Страница уже существует").get();
             var url = new Url(name);
             UrlRepository.save(url);
             ctx.redirect("/urls");
