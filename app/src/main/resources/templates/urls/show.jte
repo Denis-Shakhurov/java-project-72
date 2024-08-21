@@ -6,6 +6,12 @@
 @template.layout.page(
 content = @`
     <section>
+        @if(page.getFlash() != null)
+            <div class="rounded-0 m-0 alert alert-dismissible fade show alert-warning" role="alert">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div class="container-lg mt-5">
             <h1>${page.getUrl().getName()}</h1>
