@@ -34,7 +34,6 @@ dependencies {
     implementation("com.konghq:unirest-modules-jackson")
     implementation ("org.jsoup:jsoup:1.15.3")
     implementation("org.postgresql:postgresql:42.6.2")
-    implementation("org.apache.httpcomponents:httpclient:4.5.13")
 }
 
 application {
