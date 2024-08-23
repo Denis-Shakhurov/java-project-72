@@ -42,10 +42,11 @@ public class UrlChecksController {
         Document document = Jsoup.parse(body);
         switch (tag) {
             case "title" : return document.title() == null ? "" : Objects.requireNonNull(document.title());
-            case "h1" : return document.selectFirst(tag) == null ? "" : Objects.requireNonNull(document.selectFirst(tag)).text();
+            case "h1" : return document.selectFirst(tag) == null ? ""
+                    : Objects.requireNonNull(document.selectFirst(tag)).text();
             case "description" :
-                return document.selectFirst("meta[name=" + tag + "]").attr("content") == null ? "" :
-                        Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]"))
+                return document.selectFirst("meta[name=" + tag + "]").attr("content") == null ? ""
+                        : Objects.requireNonNull(document.selectFirst("meta[name=" + tag + "]"))
                         .attr("content");
             default : return "";
         }
